@@ -2,59 +2,132 @@
     <div class="card mt-3 shadow">
         <h5 class="card-header"><i class="fa fa-clipboard"></i> Formulário de cadastro de paciente</h5>
 
-        <form>
+        <!-- Formulário Cadastro de Paciente -->
+        <form [formGroup]="formularioCadastroPaciente" (submit)="onSubmit()">
             <div class="card-body">
                 <h5 class="card-title"><i class="fa fa-user"></i> Dados do paciente</h5>
                 <div class="row">
+
+                    <!-- Campo Nome -->
                     <div class="form-group col-lg-6 col-md-8">
-                        <label for="nome">Nome</label>
-                        <input class="form-control" type="text" id="nome">
+                        <label
+                            [ngClass]="(formularioCadastroPaciente.get('nome').touched || formularioCadastroPaciente.get('nome').dirty) && formularioCadastroPaciente.get('nome').invalid ? 'text-danger' : 'custom-text-color'"
+                            for="nome">Nome *</label>
+                        <input
+                            [ngClass]="{'is-invalid': (formularioCadastroPaciente.get('nome').touched || formularioCadastroPaciente.get('nome').dirty) && formularioCadastroPaciente.get('nome').invalid}"
+                            class="form-control" type="text" id="nome" formControlName="nome">
+                        <div
+                            *ngIf="formularioCadastroPaciente.get('nome').touched || formularioCadastroPaciente.get('nome').dirty">
+                            <small class="text-danger"
+                                *ngIf="formularioCadastroPaciente.get('nome').hasError('required')">*
+                                Nome necessário</small>
+                            <small class="text-danger"
+                                *ngIf="formularioCadastroPaciente.get('nome').hasError('minlength')">*
+                                Nome precisa ter, pelo menos, dois caracteres</small>
+                        </div>
                     </div>
+
+                    <!-- Campo CPF -->
                     <div class="form-group col-lg-3 col-md-4">
-                        <label for="cpf">CPF</label>
-                        <input class="form-control" type="text" id="cpf">
+                        <label
+                            [ngClass]="(formularioCadastroPaciente.get('cpf').touched || formularioCadastroPaciente.get('cpf').dirty) && formularioCadastroPaciente.get('cpf').invalid ? 'text-danger' : 'custom-text-color'"
+                            for="cpf">CPF *</label>
+                        <input
+                            [ngClass]="{'is-invalid': (formularioCadastroPaciente.get('cpf').touched || formularioCadastroPaciente.get('cpf').dirty) && formularioCadastroPaciente.get('cpf').invalid}"
+                            class="form-control" type="text" id="cpf" formControlName="cpf" mask="000.000.000-00">
+                        <div
+                            *ngIf="formularioCadastroPaciente.get('cpf').touched || formularioCadastroPaciente.get('cpf').dirty">
+                            <small class="text-danger"
+                                *ngIf="formularioCadastroPaciente.get('cpf').hasError('required')">*
+                                CPF necessário</small>
+                            <small class="text-danger"
+                                *ngIf="formularioCadastroPaciente.get('cpf').hasError('Mask error')">*
+                                CPF inválido</small>
+                            <small class="text-danger"
+                                *ngIf="formularioCadastroPaciente.get('cpf').hasError('cpfNotValid')">*
+                                CPF inválido</small>
+                        </div>
                     </div>
+
+                    <!-- Campo Data de nascimento -->
                     <div class="form-group col-lg-3 col-md-4">
-                        <label>Deseja usar nome social</label>
+                        <label class="custom-text-color" for="dataNascimento">Data de nascimento *</label>
+                        <input class="form-control" type="date" id="dataNascimento" formControlName="dataNascimento">
+                    </div>
+
+                    <!-- Campo Se deseja usar nome social -->
+                    <div class="form-group col-lg-3 col-md-4">
+                        <label class="mr-3 custom-text-color">Deseja usar nome social?</label>
                         <div class="form-check-inline">
-                            <div class="form-check">
-                                <input class="form-check-input" type="radio" name="seNomeSocial" id="seNaoNomeSocial"
-                                    checked>
-                                <label class="form-check-label" for="seNaoNomeSocial">Não</label>
+                            <div class="custom-control custom-radio">
+                                <input class="custom-control-input" type="radio" id="seNaoNomeSocial"
+                                    [(ngModel)]="seDesejaUsarNomeSocial" [value]="false"
+                                    [ngModelOptions]="{standalone: true}">
+                                <label class="custom-control-label" for="seNaoNomeSocial">Não</label>
                             </div>
-                            <div class="form-check">
-                                <input class="form-check-input" type="radio" name="seNomeSocial" id="seNomeSocial">
-                                <label class="form-check-label" for="seNomeSocial">Sim</label>
+                            <div class="ml-3 custom-control custom-radio">
+                                <input class="custom-control-input" type="radio" id="seNomeSocial"
+                                    [(ngModel)]="seDesejaUsarNomeSocial" [value]="true"
+                                    [ngModelOptions]="{standalone: true}">
+                                <label class="custom-control-label" for="seNomeSocial">Sim</label>
                             </div>
                         </div>
                     </div>
-                    <div class="form-group col-lg-6 col-md-8">
-                        <label for="nomeSocial">Nome social</label>
-                        <input class="form-control" type="text" id="nomeSocial">
+
+                    <!-- Campo Nome social -->
+                    <div class="form-group col-lg-6 col-md-8" [hidden]="!seDesejaUsarNomeSocial">
+                        <label class="custom-text-color" for="nomeSocial">Nome social *</label>
+                        <input class="form-control" type="text" id="nomeSocial" formControlName="nomeSocial">
                     </div>
+
+                    <!-- Campo Sexo -->
                     <div class="form-group col-lg-3 col-md-4">
-                        <label for="numeroProntuario">Número de prontuário</label>
-                        <input class="form-control" type="number" id="numeroProntuario">
-                    </div>
-                    <div class="form-group col-lg-3 col-md-4">
-                        <label for="dataNascimento">Data de nascimento</label>
-                        <input class="form-control" type="date" id="dataNascimento">
-                    </div>
-                    <div class="form-group col-lg-3 col-md-4">
-                        <label for="sexo">Sexo</label>
-                        <select class="form-control" id="select">
-                            <option>Selecione...</option>
-                            <option>Masculino</option>
-                            <option>Feminino</option>
-                            <option>Não Informado</option>
+                        <label class="custom-text-color" for="sexo">Sexo *</label>
+                        <select class="form-control" id="sexo" formControlName="sexo">
+                            <option value="">Selecione...</option>
+                            <option value="M">Masculino</option>
+                            <option value="F">Feminino</option>
+                            <option value="N/I">Não Informado</option>
                         </select>
                     </div>
+
+                    <!-- Campo Número de prontuário -->
+                    <div class="form-group col-lg-3 col-md-4">
+                        <label class="custom-text-color" for="numeroProntuario">Número de prontuário *</label>
+                        <input class="form-control" type="number" id="numeroProntuario"
+                            formControlName="numeroProntuario">
+                    </div>
+
                 </div>
                 <hr>
                 <h5 class="card-title"><i class="fa fa-map-marker"></i> Endereço do paciente</h5>
-                <div class="form-group col-lg-6 col-md-12">
-                    <label for="endereco">Endereço</label>
-                    <input class="form-control" type="text" id="endereco">
+
+                <!-- Grupo Endereço -->
+                <div class="row" formGroupName="endereco">
+
+                    <!-- Campo CEP -->
+                    <div class="form-group col-lg-3 col-md-4">
+                        <label class="custom-text-color" for="cep">CEP *</label>
+                        <input class="form-control" type="text" id="cep" formControlName="cep" mask="00000-000">
+                    </div>
+
+                    <!-- Campo Endereço -->
+                    <div class="form-group col-lg-6 col-md-8">
+                        <label class="custom-text-color" for="endereco">Endereço *</label>
+                        <input class="form-control" type="text" id="endereco" formControlName="endereco">
+                    </div>
+
+                    <!-- Campo Número -->
+                    <div class="form-group col-lg-3 col-md-4">
+                        <label class="custom-text-color" for="numero">Número *</label>
+                        <input class="form-control" type="number" id="numero" formControlName="numero">
+                    </div>
+
+                    <div class="form-group col-lg-3 col-md-4">
+                        <label class="custom-text-color" for="complemento">Complemento *</label>
+                        <input class="form-control" type="text" id="complemento" formControlName="complemento">
+                    </div>
+
                 </div>
             </div>
             <div class="card-footer d-flex justify-content-end">
