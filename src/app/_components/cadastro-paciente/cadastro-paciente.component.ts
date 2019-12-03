@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { CustomValidators } from './_utils/custom-validators';
 
@@ -20,6 +20,7 @@ export class CadastroPacienteComponent implements OnInit {
     this.generateForm();
   }
 
+  // TODO
   generateForm() {
     this.formularioCadastroPaciente = this.formBuilder.group({
       nome: ['', [Validators.required, Validators.minLength(2)]],
@@ -37,14 +38,36 @@ export class CadastroPacienteComponent implements OnInit {
     });
   }
 
+  // TODO
   onSubmit() {
     if (this.formularioCadastroPaciente.invalid) {
       this.formularioCadastroPaciente.markAllAsTouched();
     } else {
       console.log('Enviando formulário...');
     }
-    console.log(this.formularioCadastroPaciente.get('cpf').errors);
     console.log(this.formularioCadastroPaciente.value);
+  }
+
+  /**
+   * Função para mudar os parâmetros necessários para o campo "nomeSocial" quando valor do campo "seDesejaUsarNomeSocial" for alterado.
+   */
+  changeNomeSocialRequiredFiled() {
+    if (this.seDesejaUsarNomeSocial) {
+      this.formularioCadastroPaciente.get('nomeSocial').setValidators([Validators.required]);
+      this.formularioCadastroPaciente.get('nomeSocial').markAsPristine();
+      this.formularioCadastroPaciente.get('nomeSocial').markAsUntouched();
+      this.formularioCadastroPaciente.get('nomeSocial').updateValueAndValidity();
+    } else {
+      this.formularioCadastroPaciente.get('nomeSocial').clearValidators();
+    }
+  }
+
+  /**
+   * Função para limpar dados do formulário.
+   * TODO
+   */
+  clearForm() {
+    this.formularioCadastroPaciente.reset();
   }
 
 }

@@ -1,138 +1,210 @@
 <div class="container">
-    <div class="card mt-3 shadow">
-        <h5 class="card-header"><i class="fa fa-clipboard"></i> Formulário de cadastro de paciente</h5>
+  <div class="card my-3 shadow">
+    <h5 class="card-header"><i class="fa fa-clipboard"></i> Formulário de cadastro de paciente</h5>
 
-        <!-- Formulário Cadastro de Paciente -->
-        <form [formGroup]="formularioCadastroPaciente" (submit)="onSubmit()">
-            <div class="card-body">
-                <h5 class="card-title"><i class="fa fa-user"></i> Dados do paciente</h5>
-                <div class="row">
+    <!-- Formulário Cadastro de Paciente -->
+    <form [formGroup]="formularioCadastroPaciente" (reset)="clearForm()" (submit)="onSubmit()">
+      <div class="card-body">
+        <h5 class="card-title"><i class="fa fa-user"></i> Dados do paciente</h5>
+        <div class="row">
 
-                    <!-- Campo Nome -->
-                    <div class="form-group col-lg-6 col-md-8">
-                        <label
-                            [ngClass]="(formularioCadastroPaciente.get('nome').touched || formularioCadastroPaciente.get('nome').dirty) && formularioCadastroPaciente.get('nome').invalid ? 'text-danger' : 'custom-text-color'"
-                            for="nome">Nome *</label>
-                        <input
-                            [ngClass]="{'is-invalid': (formularioCadastroPaciente.get('nome').touched || formularioCadastroPaciente.get('nome').dirty) && formularioCadastroPaciente.get('nome').invalid}"
-                            class="form-control" type="text" id="nome" formControlName="nome">
-                        <div
-                            *ngIf="formularioCadastroPaciente.get('nome').touched || formularioCadastroPaciente.get('nome').dirty">
-                            <small class="text-danger"
-                                *ngIf="formularioCadastroPaciente.get('nome').hasError('required')">*
-                                Nome necessário</small>
-                            <small class="text-danger"
-                                *ngIf="formularioCadastroPaciente.get('nome').hasError('minlength')">*
-                                Nome precisa ter, pelo menos, dois caracteres</small>
-                        </div>
-                    </div>
-
-                    <!-- Campo CPF -->
-                    <div class="form-group col-lg-3 col-md-4">
-                        <label
-                            [ngClass]="(formularioCadastroPaciente.get('cpf').touched || formularioCadastroPaciente.get('cpf').dirty) && formularioCadastroPaciente.get('cpf').invalid ? 'text-danger' : 'custom-text-color'"
-                            for="cpf">CPF *</label>
-                        <input
-                            [ngClass]="{'is-invalid': (formularioCadastroPaciente.get('cpf').touched || formularioCadastroPaciente.get('cpf').dirty) && formularioCadastroPaciente.get('cpf').invalid}"
-                            class="form-control" type="text" id="cpf" formControlName="cpf" mask="000.000.000-00">
-                        <div
-                            *ngIf="formularioCadastroPaciente.get('cpf').touched || formularioCadastroPaciente.get('cpf').dirty">
-                            <small class="text-danger"
-                                *ngIf="formularioCadastroPaciente.get('cpf').hasError('required')">*
-                                CPF necessário</small>
-                            <small class="text-danger"
-                                *ngIf="formularioCadastroPaciente.get('cpf').hasError('Mask error')">*
-                                CPF inválido</small>
-                            <small class="text-danger"
-                                *ngIf="formularioCadastroPaciente.get('cpf').hasError('cpfNotValid')">*
-                                CPF inválido</small>
-                        </div>
-                    </div>
-
-                    <!-- Campo Data de nascimento -->
-                    <div class="form-group col-lg-3 col-md-4">
-                        <label class="custom-text-color" for="dataNascimento">Data de nascimento *</label>
-                        <input class="form-control" type="date" id="dataNascimento" formControlName="dataNascimento">
-                    </div>
-
-                    <!-- Campo Se deseja usar nome social -->
-                    <div class="form-group col-lg-3 col-md-4">
-                        <label class="mr-3 custom-text-color">Deseja usar nome social?</label>
-                        <div class="form-check-inline">
-                            <div class="custom-control custom-radio">
-                                <input class="custom-control-input" type="radio" id="seNaoNomeSocial"
-                                    [(ngModel)]="seDesejaUsarNomeSocial" [value]="false"
-                                    [ngModelOptions]="{standalone: true}">
-                                <label class="custom-control-label" for="seNaoNomeSocial">Não</label>
-                            </div>
-                            <div class="ml-3 custom-control custom-radio">
-                                <input class="custom-control-input" type="radio" id="seNomeSocial"
-                                    [(ngModel)]="seDesejaUsarNomeSocial" [value]="true"
-                                    [ngModelOptions]="{standalone: true}">
-                                <label class="custom-control-label" for="seNomeSocial">Sim</label>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Campo Nome social -->
-                    <div class="form-group col-lg-6 col-md-8" [hidden]="!seDesejaUsarNomeSocial">
-                        <label class="custom-text-color" for="nomeSocial">Nome social *</label>
-                        <input class="form-control" type="text" id="nomeSocial" formControlName="nomeSocial">
-                    </div>
-
-                    <!-- Campo Sexo -->
-                    <div class="form-group col-lg-3 col-md-4">
-                        <label class="custom-text-color" for="sexo">Sexo *</label>
-                        <select class="form-control" id="sexo" formControlName="sexo">
-                            <option value="">Selecione...</option>
-                            <option value="M">Masculino</option>
-                            <option value="F">Feminino</option>
-                            <option value="N/I">Não Informado</option>
-                        </select>
-                    </div>
-
-                    <!-- Campo Número de prontuário -->
-                    <div class="form-group col-lg-3 col-md-4">
-                        <label class="custom-text-color" for="numeroProntuario">Número de prontuário *</label>
-                        <input class="form-control" type="number" id="numeroProntuario"
-                            formControlName="numeroProntuario">
-                    </div>
-
-                </div>
-                <hr>
-                <h5 class="card-title"><i class="fa fa-map-marker"></i> Endereço do paciente</h5>
-
-                <!-- Grupo Endereço -->
-                <div class="row" formGroupName="endereco">
-
-                    <!-- Campo CEP -->
-                    <div class="form-group col-lg-3 col-md-4">
-                        <label class="custom-text-color" for="cep">CEP *</label>
-                        <input class="form-control" type="text" id="cep" formControlName="cep" mask="00000-000">
-                    </div>
-
-                    <!-- Campo Endereço -->
-                    <div class="form-group col-lg-6 col-md-8">
-                        <label class="custom-text-color" for="endereco">Endereço *</label>
-                        <input class="form-control" type="text" id="endereco" formControlName="endereco">
-                    </div>
-
-                    <!-- Campo Número -->
-                    <div class="form-group col-lg-3 col-md-4">
-                        <label class="custom-text-color" for="numero">Número *</label>
-                        <input class="form-control" type="number" id="numero" formControlName="numero">
-                    </div>
-
-                    <div class="form-group col-lg-3 col-md-4">
-                        <label class="custom-text-color" for="complemento">Complemento *</label>
-                        <input class="form-control" type="text" id="complemento" formControlName="complemento">
-                    </div>
-
-                </div>
+          <!-- Campo Nome -->
+          <div class="form-group col-lg-6 col-md-8">
+            <label
+              [ngClass]="(formularioCadastroPaciente.get('nome').touched || formularioCadastroPaciente.get('nome').dirty) && formularioCadastroPaciente.get('nome').invalid ? 'text-danger' : 'custom-text-color'"
+              for="nome">Nome *</label>
+            <input
+              [ngClass]="{'is-invalid': (formularioCadastroPaciente.get('nome').touched || formularioCadastroPaciente.get('nome').dirty) && formularioCadastroPaciente.get('nome').invalid}"
+              class="form-control" type="text" id="nome" formControlName="nome">
+            <div *ngIf="formularioCadastroPaciente.get('nome').touched || formularioCadastroPaciente.get('nome').dirty">
+              <small class="text-danger" *ngIf="formularioCadastroPaciente.get('nome').hasError('required')">*
+                Nome necessário</small>
+              <small class="text-danger" *ngIf="formularioCadastroPaciente.get('nome').hasError('minlength')">*
+                Nome precisa ter, pelo menos, dois caracteres</small>
             </div>
-            <div class="card-footer d-flex justify-content-end">
-                <button class="btn btn-primary" type="submit">Cadastrar <i class="fa fa-user-plus"></i></button>
+          </div>
+
+          <!-- Campo CPF -->
+          <div class="form-group col-lg-3 col-md-4">
+            <label
+              [ngClass]="(formularioCadastroPaciente.get('cpf').touched || formularioCadastroPaciente.get('cpf').dirty) && formularioCadastroPaciente.get('cpf').invalid ? 'text-danger' : 'custom-text-color'"
+              for="cpf">CPF *</label>
+            <input
+              [ngClass]="{'is-invalid': (formularioCadastroPaciente.get('cpf').touched || formularioCadastroPaciente.get('cpf').dirty) && formularioCadastroPaciente.get('cpf').invalid}"
+              class="form-control" type="text" id="cpf" formControlName="cpf" mask="000.000.000-00">
+            <div *ngIf="formularioCadastroPaciente.get('cpf').touched || formularioCadastroPaciente.get('cpf').dirty">
+              <small class="text-danger" *ngIf="formularioCadastroPaciente.get('cpf').hasError('required')">*
+                CPF necessário</small>
+              <small class="text-danger"
+                *ngIf="formularioCadastroPaciente.get('cpf').hasError('Mask error') || formularioCadastroPaciente.get('cpf').hasError('cpfNotValid')">*
+                CPF inválido</small>
             </div>
-        </form>
-    </div>
+          </div>
+
+          <!-- Campo Data de nascimento -->
+          <div class="form-group col-lg-3 col-md-4">
+            <label
+              [ngClass]="(formularioCadastroPaciente.get('dataNascimento').touched || formularioCadastroPaciente.get('dataNascimento').dirty) && formularioCadastroPaciente.get('dataNascimento').invalid ? 'text-danger' : 'custom-text-color'"
+              class="custom-text-color" for="dataNascimento">Data de nascimento *</label>
+            <input
+              [ngClass]="{'is-invalid': (formularioCadastroPaciente.get('dataNascimento').touched || formularioCadastroPaciente.get('dataNascimento').dirty) && formularioCadastroPaciente.get('dataNascimento').invalid}"
+              class="form-control" type="date" id="dataNascimento" formControlName="dataNascimento">
+            <div
+              *ngIf="formularioCadastroPaciente.get('dataNascimento').touched || formularioCadastroPaciente.get('dataNascimento').dirty">
+              <small class="text-danger" *ngIf="formularioCadastroPaciente.get('dataNascimento').hasError('required')">*
+                Data de nascimento necessária</small>
+            </div>
+          </div>
+
+          <!-- Campo Se deseja usar nome social -->
+          <div class="form-group col-lg-3 col-md-4">
+            <label class="mr-3 custom-text-color">Deseja usar nome social?</label>
+            <div class="form-check-inline">
+              <div class="custom-control custom-radio">
+                <input class="custom-control-input" type="radio" id="seNaoNomeSocial"
+                  [(ngModel)]="seDesejaUsarNomeSocial" [value]="false" [ngModelOptions]="{standalone: true}"
+                  (change)="changeNomeSocialRequiredFiled()">
+                <label class="custom-control-label" for="seNaoNomeSocial">Não</label>
+              </div>
+              <div class="ml-3 custom-control custom-radio">
+                <input class="custom-control-input" type="radio" id="seNomeSocial" [(ngModel)]="seDesejaUsarNomeSocial"
+                  [value]="true" [ngModelOptions]="{standalone: true}" (change)="changeNomeSocialRequiredFiled()">
+                <label class="custom-control-label" for="seNomeSocial">Sim</label>
+              </div>
+            </div>
+          </div>
+
+          <!-- Campo Nome social -->
+          <div class="form-group col-lg-6 col-md-8" [hidden]="!seDesejaUsarNomeSocial">
+            <label
+              [ngClass]="(formularioCadastroPaciente.get('nomeSocial').touched || formularioCadastroPaciente.get('nomeSocial').dirty) && formularioCadastroPaciente.get('nomeSocial').invalid ? 'text-danger' : 'custom-text-color'"
+              class="custom-text-color" for="nomeSocial">Nome social *</label>
+            <input
+              [ngClass]="{'is-invalid': (formularioCadastroPaciente.get('nomeSocial').touched || formularioCadastroPaciente.get('nomeSocial').dirty) && formularioCadastroPaciente.get('nomeSocial').invalid}"
+              class="form-control" type="text" id="nomeSocial" formControlName="nomeSocial">
+            <div
+              *ngIf="formularioCadastroPaciente.get('nomeSocial').touched || formularioCadastroPaciente.get('nomeSocial').dirty">
+              <small class="text-danger" *ngIf="formularioCadastroPaciente.get('nomeSocial').hasError('required')">*
+                Nome social necessário</small>
+            </div>
+          </div>
+
+          <!-- Campo Sexo -->
+          <div class="form-group col-lg-3 col-md-4">
+            <label
+              [ngClass]="formularioCadastroPaciente.get('sexo').touched && formularioCadastroPaciente.get('sexo').invalid ? 'text-danger' : 'custom-text-color'"
+              class="custom-text-color" for="sexo">Sexo *</label>
+            <select
+              [ngClass]="{'is-invalid': formularioCadastroPaciente.get('sexo').touched && formularioCadastroPaciente.get('sexo').invalid}"
+              class="form-control" id="sexo" formControlName="sexo">
+              <option value="">Selecione...</option>
+              <option value="M">Masculino</option>
+              <option value="F">Feminino</option>
+              <option value="N/I">Não Informado</option>
+            </select>
+            <div *ngIf="formularioCadastroPaciente.get('sexo').touched">
+              <small class="text-danger" *ngIf="formularioCadastroPaciente.get('sexo').hasError('required')">*
+                Sexo necessário</small>
+            </div>
+          </div>
+
+          <!-- Campo Número de prontuário -->
+          <div class="form-group col-lg-3 col-md-4">
+            <label
+              [ngClass]="(formularioCadastroPaciente.get('numeroProntuario').touched || formularioCadastroPaciente.get('numeroProntuario').dirty) && formularioCadastroPaciente.get('numeroProntuario').invalid ? 'text-danger' : 'custom-text-color'"
+              class="custom-text-color" for="numeroProntuario">Número de prontuário *</label>
+            <input
+              [ngClass]="{'is-invalid': (formularioCadastroPaciente.get('numeroProntuario').touched || formularioCadastroPaciente.get('numeroProntuario').dirty) && formularioCadastroPaciente.get('numeroProntuario').invalid}"
+              class="form-control" type="number" id="numeroProntuario" formControlName="numeroProntuario">
+            <div
+              *ngIf="formularioCadastroPaciente.get('numeroProntuario').touched || formularioCadastroPaciente.get('numeroProntuario').dirty">
+              <small class="text-danger"
+                *ngIf="formularioCadastroPaciente.get('numeroProntuario').hasError('required')">*
+                Número de prontuário necessário</small>
+            </div>
+          </div>
+
+        </div>
+        <hr>
+        <h5 class="card-title"><i class="fa fa-map-marker"></i> Endereço do paciente</h5>
+
+        <!-- Grupo Endereço -->
+        <div class="row" formGroupName="endereco">
+
+          <!-- Campo CEP -->
+          <div class="form-group col-lg-3 col-md-4">
+            <label
+              [ngClass]="(formularioCadastroPaciente.get('endereco').get('cep').touched || formularioCadastroPaciente.get('endereco').get('cep').dirty) && formularioCadastroPaciente.get('endereco').get('cep').invalid ? 'text-danger' : 'custom-text-color'"
+              class="custom-text-color" for="cep">CEP *</label>
+            <input
+              [ngClass]="{'is-invalid': (formularioCadastroPaciente.get('endereco').get('cep').touched || formularioCadastroPaciente.get('endereco').get('cep').dirty) && formularioCadastroPaciente.get('endereco').get('cep').invalid}"
+              class="form-control" type="text" id="cep" formControlName="cep" mask="00000-000">
+            <div
+              *ngIf="formularioCadastroPaciente.get('endereco').get('cep').touched || formularioCadastroPaciente.get('endereco').get('cep').dirty">
+              <small class="text-danger"
+                *ngIf="formularioCadastroPaciente.get('endereco').get('cep').hasError('required')">*
+                CEP necessário</small>
+              <small class="text-danger"
+                *ngIf="formularioCadastroPaciente.get('endereco').get('cep').hasError('Mask error')">*
+                CEP inválido</small>
+            </div>
+          </div>
+
+          <!-- Campo Endereço -->
+          <div class="form-group col-lg-6 col-md-8">
+            <label
+              [ngClass]="(formularioCadastroPaciente.get('endereco').get('endereco').touched || formularioCadastroPaciente.get('endereco').get('endereco').dirty) && formularioCadastroPaciente.get('endereco').get('endereco').invalid ? 'text-danger' : 'custom-text-color'"
+              class="custom-text-color" for="endereco">Endereço *</label>
+            <input
+              [ngClass]="{'is-invalid': (formularioCadastroPaciente.get('endereco').get('endereco').touched || formularioCadastroPaciente.get('endereco').get('endereco').dirty) && formularioCadastroPaciente.get('endereco').get('endereco').invalid}"
+              class="form-control" type="text" id="endereco" formControlName="endereco">
+            <div
+              *ngIf="formularioCadastroPaciente.get('endereco').get('endereco').touched || formularioCadastroPaciente.get('endereco').get('endereco').dirty">
+              <small class="text-danger"
+                *ngIf="formularioCadastroPaciente.get('endereco').get('endereco').hasError('required')">*
+                Endereço necessário</small>
+            </div>
+          </div>
+
+          <!-- Campo Número -->
+          <div class="form-group col-lg-3 col-md-4">
+            <label
+              [ngClass]="(formularioCadastroPaciente.get('endereco').get('numero').touched || formularioCadastroPaciente.get('endereco').get('numero').dirty) && formularioCadastroPaciente.get('endereco').get('numero').invalid ? 'text-danger' : 'custom-text-color'"
+              class="custom-text-color" for="numero">Número *</label>
+            <input
+              [ngClass]="{'is-invalid': (formularioCadastroPaciente.get('endereco').get('numero').touched || formularioCadastroPaciente.get('endereco').get('numero').dirty) && formularioCadastroPaciente.get('endereco').get('numero').invalid}"
+              class="form-control" type="number" id="numero" formControlName="numero">
+            <div
+              *ngIf="formularioCadastroPaciente.get('endereco').get('numero').touched || formularioCadastroPaciente.get('endereco').get('numero').dirty">
+              <small class="text-danger"
+                *ngIf="formularioCadastroPaciente.get('endereco').get('numero').hasError('required')">*
+                Número necessário</small>
+            </div>
+          </div>
+
+          <!-- Campo Complemento -->
+          <div class="form-group col-lg-3 col-md-4">
+            <label
+              [ngClass]="(formularioCadastroPaciente.get('endereco').get('complemento').touched || formularioCadastroPaciente.get('endereco').get('complemento').dirty) && formularioCadastroPaciente.get('endereco').get('complemento').invalid ? 'text-danger' : 'custom-text-color'"
+              class="custom-text-color" for="complemento">Complemento *</label>
+            <input
+              [ngClass]="{'is-invalid': (formularioCadastroPaciente.get('endereco').get('complemento').touched || formularioCadastroPaciente.get('endereco').get('complemento').dirty) && formularioCadastroPaciente.get('endereco').get('complemento').invalid}"
+              class="form-control" type="text" id="complemento" formControlName="complemento">
+            <div
+              *ngIf="formularioCadastroPaciente.get('endereco').get('complemento').touched || formularioCadastroPaciente.get('endereco').get('complemento').dirty">
+              <small class="text-danger"
+                *ngIf="formularioCadastroPaciente.get('endereco').get('complemento').hasError('required')">*
+                Complemento necessário</small>
+            </div>
+          </div>
+
+        </div>
+      </div>
+      <div class="card-footer d-flex justify-content-end">
+        
+        <button class="btn btn-warning" type="reset">Limpar <i class="fa fa-eraser"></i></button>
+        <button class="btn btn-success ml-3" type="submit">Cadastrar <i class="fa fa-user-plus"></i></button>
+      </div>
+    </form>
+  </div>
 </div>
