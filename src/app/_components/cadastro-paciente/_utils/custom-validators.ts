@@ -1,5 +1,8 @@
 import { AbstractControl, Validators } from '@angular/forms';
 
+/**
+ * Classe para armazenar métodos personalizados das validações do formulário.
+ */
 export class CustomValidators {
 
     /**
@@ -56,4 +59,18 @@ export class CustomValidators {
             return null;
         };
     }
+
+    /**
+     * Validator para quando data selecionada for maior que a data atual.
+     */
+    static dateGreaterThanTodayValidator() {
+        return (control: AbstractControl): Validators => {
+            const value = control.value;
+            if (Date.parse(value) && Date.parse(value + 'T00:00:00') >= Date.now()) {
+                return { invalidDate: true };
+            }
+            return null;
+        };
+    }
+
 }
