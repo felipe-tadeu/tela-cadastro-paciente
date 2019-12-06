@@ -108,9 +108,9 @@
               [ngClass]="{'is-invalid': formularioCadastroPaciente.get('sexo').touched && formularioCadastroPaciente.get('sexo').invalid}"
               class="form-control" id="sexo" formControlName="sexo">
               <option value="">Selecione...</option>
-              <option value="M">Masculino</option>
-              <option value="F">Feminino</option>
-              <option value="N/I">Não Informado</option>
+              <option value="MASCULINO">Masculino</option>
+              <option value="FEMININO">Feminino</option>
+              <option value="NAO_INFORMADO">Não Informado</option>
             </select>
             <div *ngIf="formularioCadastroPaciente.get('sexo').touched">
               <small class="text-danger" *ngIf="formularioCadastroPaciente.get('sexo').hasError('required')">*
