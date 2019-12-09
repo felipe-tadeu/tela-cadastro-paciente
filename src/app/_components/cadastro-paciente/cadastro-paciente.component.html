@@ -194,18 +194,8 @@
 
           <!-- Campo Complemento -->
           <div class="form-group col-lg-3 col-md-4">
-            <label
-              [ngClass]="(formularioCadastroPaciente.get('endereco').get('complemento').touched || formularioCadastroPaciente.get('endereco').get('complemento').dirty) && formularioCadastroPaciente.get('endereco').get('complemento').invalid ? 'text-danger' : 'custom-text-color'"
-              class="custom-text-color" for="complemento">Complemento *</label>
-            <input
-              [ngClass]="{'is-invalid': (formularioCadastroPaciente.get('endereco').get('complemento').touched || formularioCadastroPaciente.get('endereco').get('complemento').dirty) && formularioCadastroPaciente.get('endereco').get('complemento').invalid}"
-              class="form-control" type="text" id="complemento" formControlName="complemento">
-            <div
-              *ngIf="formularioCadastroPaciente.get('endereco').get('complemento').touched || formularioCadastroPaciente.get('endereco').get('complemento').dirty">
-              <small class="text-danger"
-                *ngIf="formularioCadastroPaciente.get('endereco').get('complemento').hasError('required')">*
-                Complemento necessário</small>
-            </div>
+            <label class="custom-text-color" for="complemento">Complemento</label>
+            <input class="form-control" type="text" id="complemento" formControlName="complemento">
           </div>
 
         </div>

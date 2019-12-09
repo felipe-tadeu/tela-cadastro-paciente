@@ -1,6 +1,7 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { FormBuilder, FormGroup, Validators, ValidatorFn } from '@angular/forms';
-import { CustomValidators } from './_utils/custom-validators';
+import { CustomValidators } from './_utils/custom-validators';;
+import { CadastroPacienteService } from './_services/cadastro-paciente.service';
 
 // Array de validators para os campos de nome
 const validatorsParaCampoNome: ValidatorFn[] = [Validators.required,
@@ -17,9 +18,11 @@ const validatorsParaCampoNome: ValidatorFn[] = [Validators.required,
 export class CadastroPacienteComponent implements OnInit {
 
   formularioCadastroPaciente: FormGroup;
+  loading = false; // TODO implementar loading
 
   constructor(
-    private formBuilder: FormBuilder
+    private formBuilder: FormBuilder,
+    private cadastroPacienteService: CadastroPacienteService
   ) { }
 
   ngOnInit() {
@@ -42,17 +45,28 @@ export class CadastroPacienteComponent implements OnInit {
         cep: ['', Validators.required],
         endereco: ['', Validators.required],
         numero: ['', Validators.required],
-        complemento: ['', Validators.required]
+        complemento: ['']
       })
     });
   }
 
-  // TODO Requisição de envio de dados para API !IMPORTANT
+  // TODO Apresentação de retorno da requisição
   onSubmit() {
     if (this.formularioCadastroPaciente.invalid) {
       this.formularioCadastroPaciente.markAllAsTouched();
     } else {
-      console.log('Enviando formulário...');
+      this.loading = true;
+      this.cadastroPacienteService.cadastrarPaciente(this.formularioCadastroPaciente.value).subscribe(
+        res => {
+          console.log('Cadastro realizado com sucesso!');
+          this.generateForm();
+          this.loading = false;
+        },
+        err => {
+          console.log('Erro ao cadastrar paciente.');
+          this.loading = false;
+        }
+      );
     }
   }
 
