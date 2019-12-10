@@ -1,14 +1,17 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators, ValidatorFn } from '@angular/forms';
-import { CustomValidators } from './_utils/custom-validators';;
+import { CustomValidators } from './_utils/custom-validators';
 import { CadastroPacienteService } from './_services/cadastro-paciente.service';
 
 // Array de validators para os campos de nome
 const validatorsParaCampoNome: ValidatorFn[] = [Validators.required,
-  Validators.minLength(2),
-  Validators.pattern(
-    '^[A-Za-z]+([\']{1}[A-Za-z]+([ ]{1})?)?(([A-Za-z]+[\']{1})?([A-Za-z]*)?([A-Za-z]+([ ]{1})?))*$'
-  )];
+Validators.minLength(2),
+Validators.pattern(
+  '^[A-Za-z]+([\']{1}[A-Za-z]+([ ]{1})?)?(([A-Za-z]+[\']{1})?([A-Za-z]*)?([A-Za-z]+([ ]{1})?))*$'
+)];
+
+// jQuery
+declare var $: any;
 
 @Component({
   selector: 'app-cadastro-paciente',
@@ -18,7 +21,9 @@ const validatorsParaCampoNome: ValidatorFn[] = [Validators.required,
 export class CadastroPacienteComponent implements OnInit {
 
   formularioCadastroPaciente: FormGroup;
-  loading = false; // TODO implementar loading
+  loading = false;
+  aceitouOsTermosNomeSocial = false;
+  cadastroComSucesso: boolean = null;
 
   constructor(
     private formBuilder: FormBuilder,
@@ -50,20 +55,24 @@ export class CadastroPacienteComponent implements OnInit {
     });
   }
 
-  // TODO Apresentação de retorno da requisição
+  /**
+   * Função do envio dos dados do paciente. Após validação do formulário, é feita uma requisição à API para o cadastro do paciente.
+   *
+   * TODO mostrar mensagem de retorno quando em caso de erro.
+   */
   onSubmit() {
     if (this.formularioCadastroPaciente.invalid) {
       this.formularioCadastroPaciente.markAllAsTouched();
-    } else {
+    } else if (!this.loading) {
       this.loading = true;
       this.cadastroPacienteService.cadastrarPaciente(this.formularioCadastroPaciente.value).subscribe(
         res => {
-          console.log('Cadastro realizado com sucesso!');
+          this.cadastroComSucesso = true;
           this.generateForm();
           this.loading = false;
         },
         err => {
-          console.log('Erro ao cadastrar paciente.');
+          this.cadastroComSucesso = false;
           this.loading = false;
         }
       );
@@ -75,6 +84,7 @@ export class CadastroPacienteComponent implements OnInit {
    */
   changeNomeSocialRequiredFiled() {
     if (this.formularioCadastroPaciente.get('seDesejaUsarNomeSocial').value) {
+      $('#modalDeclaracao').modal('show');
       this.formularioCadastroPaciente.get('nomeSocial').setValidators(validatorsParaCampoNome);
       this.formularioCadastroPaciente.get('nomeSocial').markAsPristine();
       this.formularioCadastroPaciente.get('nomeSocial').markAsUntouched();
@@ -84,8 +94,13 @@ export class CadastroPacienteComponent implements OnInit {
     }
   }
 
-  // TODO Opção da visualização do decreto
-  // TODO Modal para termo de aceitação do nome social
-  // TODO Geração do número de prontuário sequencial (back) !IMPORTANT
+  /**
+   * Setar varível da visualização dos alertas para null.
+   */
+  clearAlerts() {
+    this.cadastroComSucesso = null;
+  }
+
+  // TODO geração do número de prontuário sequencial (back) !IMPORTANT
 
 }
