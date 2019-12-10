@@ -16,7 +16,7 @@
 
         <!-- Alerta de Falha ao Realizar o Cadastro -->
         <div *ngIf="cadastroComSucesso === false" class="alert alert-danger">
-          Falha ao cadastrar paciente.
+          Falha ao cadastrar paciente: {{ mensagemErro }}
           <button type="button" class="close" (click)="clearAlerts()">
             <span aria-hidden="true">&times;</span>
           </button>

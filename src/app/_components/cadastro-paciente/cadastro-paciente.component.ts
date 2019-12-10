@@ -24,6 +24,7 @@ export class CadastroPacienteComponent implements OnInit {
   loading = false;
   aceitouOsTermosNomeSocial = false;
   cadastroComSucesso: boolean = null;
+  mensagemErro: string;
 
   constructor(
     private formBuilder: FormBuilder,
@@ -72,6 +73,7 @@ export class CadastroPacienteComponent implements OnInit {
           this.loading = false;
         },
         err => {
+          this.mensagemErro = err.error.message;
           this.cadastroComSucesso = false;
           this.loading = false;
         }
