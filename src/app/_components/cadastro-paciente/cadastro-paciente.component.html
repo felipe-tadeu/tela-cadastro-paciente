@@ -7,16 +7,16 @@
       <div class="card-body">
 
         <!-- Alerta de Cadastro com Sucesso -->
-        <div *ngIf="cadastroComSucesso" class="alert alert-success">
-          Paciente cadastrado com sucesso!
+        <div *ngIf="mensagemSucesso" class="alert alert-success">
+          <strong>Paciente cadastrado com sucesso!</strong>
           <button type="button" class="close" (click)="clearAlerts()">
             <span aria-hidden="true">&times;</span>
           </button>
         </div>
 
         <!-- Alerta de Falha ao Realizar o Cadastro -->
-        <div *ngIf="cadastroComSucesso === false" class="alert alert-danger">
-          Falha ao cadastrar paciente: {{ mensagemErro }}
+        <div *ngIf="mensagemErro" class="alert alert-danger">
+          <strong>{{ mensagemErro }}</strong>
           <button type="button" class="close" (click)="clearAlerts()">
             <span aria-hidden="true">&times;</span>
           </button>
@@ -88,14 +88,14 @@
                   checked>
                 <label class="custom-control-label" for="seNaoNomeSocial">Não</label>
               </div>
-              <div class="mx-3 custom-control custom-radio">
+              <div class="mx-2 custom-control custom-radio">
                 <input class="custom-control-input" type="radio" id="seNomeSocial"
                   formControlName="seDesejaUsarNomeSocial" [value]="true" (change)="changeNomeSocialRequiredFiled()">
                 <label class="custom-control-label" for="seNomeSocial">Sim</label>
               </div>
             </div>
-            <button type="button" class="btn btn-info btn-sm" data-toggle="modal" data-target="#modalTermo">Ver
-              decreto</button>
+            <button type="button" class="btn btn-outline-info" data-toggle="modal" data-target="#modalTermo">Decreto <i
+                class="fa fa-clipboard"></i></button>
           </div>
 
           <!-- Campo Nome social -->
@@ -137,20 +137,38 @@
             </div>
           </div>
 
-          <!-- Campo Número de prontuário -->
+          <!-- Campo Número do prontuário -->
           <div class="form-group col-lg-3 col-md-4">
             <label
               [ngClass]="(formularioCadastroPaciente.get('numeroProntuario').touched || formularioCadastroPaciente.get('numeroProntuario').dirty) && formularioCadastroPaciente.get('numeroProntuario').invalid ? 'text-danger' : 'custom-text-color'"
-              class="custom-text-color" for="numeroProntuario">Número de prontuário *</label>
-            <input
-              [ngClass]="{'is-invalid': (formularioCadastroPaciente.get('numeroProntuario').touched || formularioCadastroPaciente.get('numeroProntuario').dirty) && formularioCadastroPaciente.get('numeroProntuario').invalid}"
-              class="form-control" type="number" id="numeroProntuario" formControlName="numeroProntuario">
+              class="custom-text-color" for="numeroProntuario">
+              Número do prontuário *
+
+            </label>
+            <div class="input-group">
+              <div class="input-group-prepend">
+                <button class="btn btn-outline-primary" type="button" id="button-addon1" (click)="getNumeroProntuario()">
+                  Buscar <i *ngIf="!loadingNumeroProntuario" class="fa fa-search"></i>
+                  <div *ngIf="loadingNumeroProntuario" class="spinner-border spinner-border-sm" role="status">
+                    <span class="sr-only">Loading...</span>
+                  </div>
+                </button>
+              </div>
+              <input
+                [ngClass]="{'is-invalid': (formularioCadastroPaciente.get('numeroProntuario').touched || formularioCadastroPaciente.get('numeroProntuario').dirty) && formularioCadastroPaciente.get('numeroProntuario').invalid}"
+                class="form-control" type="number" id="numeroProntuario" formControlName="numeroProntuario">
+            </div>
             <div
               *ngIf="formularioCadastroPaciente.get('numeroProntuario').touched || formularioCadastroPaciente.get('numeroProntuario').dirty">
               <small class="text-danger"
                 *ngIf="formularioCadastroPaciente.get('numeroProntuario').hasError('required')">*
-                Número de prontuário necessário</small>
+                Número do prontuário necessário</small>
             </div>
+          </div>
+
+          <div class="col-lg-3 col-md-4">
+            <label>&nbsp;</label>
+
           </div>
 
         </div>
@@ -223,8 +241,8 @@
         <div *ngIf="loading" class="spinner-border mr-3" role="status">
           <span class="sr-only">Loading...</span>
         </div>
-        <button class="btn btn-warning" type="reset" [disabled]="loading">Limpar <i class="fa fa-eraser"></i></button>
-        <button class="btn btn-success ml-3" type="submit" [disabled]="loading">Cadastrar <i
+        <button class="btn btn-warning" type="reset">Limpar <i class="fa fa-eraser"></i></button>
+        <button class="btn btn-success ml-3" type="submit">Cadastrar <i
             class="fa fa-user-plus"></i></button>
       </div>
     </form>

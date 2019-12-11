@@ -22,10 +22,21 @@ export class CadastroPacienteService {
    * Função de requisição à API para cadastrar um novo paciente.
    *
    * @param form Formulário com dados do paciente a ser cadastrado
+   * @returns Observable com dados do paciente
    */
   cadastrarPaciente(form: PacienteForm): Observable<Paciente> {
     const url = this.uri + this.port + this.path;
     return this.httpClient.post<Paciente>(url, form);
+  }
+
+  /**
+   * Função de requisição à API para buscar o menor número do prontuário disponível.
+   *
+   * @returns Observable com número do prontuário.
+   */
+  obterNumeroProntuario(): Observable<number> {
+    const url = this.uri + this.port + this.path + '/obter-numero-prontuario';
+    return this.httpClient.get<number>(url);
   }
 
 }

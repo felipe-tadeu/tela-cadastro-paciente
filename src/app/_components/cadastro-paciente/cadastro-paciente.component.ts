@@ -23,8 +23,9 @@ export class CadastroPacienteComponent implements OnInit {
   formularioCadastroPaciente: FormGroup;
   loading = false;
   aceitouOsTermosNomeSocial = false;
-  cadastroComSucesso: boolean = null;
+  mensagemSucesso = false;
   mensagemErro: string;
+  loadingNumeroProntuario = false;
 
   constructor(
     private formBuilder: FormBuilder,
@@ -58,23 +59,22 @@ export class CadastroPacienteComponent implements OnInit {
 
   /**
    * Função do envio dos dados do paciente. Após validação do formulário, é feita uma requisição à API para o cadastro do paciente.
-   *
-   * TODO mostrar mensagem de retorno quando em caso de erro.
    */
   onSubmit() {
     if (this.formularioCadastroPaciente.invalid) {
       this.formularioCadastroPaciente.markAllAsTouched();
-    } else if (!this.loading) {
+    } else if (!this.loading && !this.loadingNumeroProntuario) {
+      this.clearAlerts();
       this.loading = true;
       this.cadastroPacienteService.cadastrarPaciente(this.formularioCadastroPaciente.value).subscribe(
         res => {
-          this.cadastroComSucesso = true;
+          this.mensagemSucesso = true;
           this.generateForm();
           this.loading = false;
         },
         err => {
           this.mensagemErro = err.error.message;
-          this.cadastroComSucesso = false;
+          this.mensagemSucesso = false;
           this.loading = false;
         }
       );
@@ -100,9 +100,28 @@ export class CadastroPacienteComponent implements OnInit {
    * Setar varível da visualização dos alertas para null.
    */
   clearAlerts() {
-    this.cadastroComSucesso = null;
+    this.mensagemSucesso = false;
+    this.mensagemErro = null;
   }
 
-  // TODO geração do número de prontuário sequencial (back) !IMPORTANT
+  /**
+   * Função para obter número do prontuário. Será realizada uma requisição à API para buscar o menor número do prontuário disponível.
+   */
+  getNumeroProntuario() {
+    if (!this.loading && !this.loadingNumeroProntuario) {
+      this.clearAlerts();
+      this.loadingNumeroProntuario = true;
+      this.cadastroPacienteService.obterNumeroProntuario().subscribe(
+        res => {
+          this.formularioCadastroPaciente.get('numeroProntuario').setValue(res);
+          this.loadingNumeroProntuario = false;
+        },
+        err => {
+          this.mensagemErro = err.error.message;
+          this.loadingNumeroProntuario = false;
+        }
+      );
+    }
+  }
 
 }
